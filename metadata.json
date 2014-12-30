@@ -1,0 +1,11 @@
+{
+  "name": "trusty64",
+  "description": "This box contains minimal Ubuntu 14.04 LTS 64-bit.",
+  "versions": [{
+    "version": "0.0.1",
+    "providers": [{
+      "name": "virtualbox",
+      "url": "packer_virtualbox-iso_virtualbox.box"
+    }]
+  }]
+}

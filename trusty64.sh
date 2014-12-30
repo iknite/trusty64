@@ -12,17 +12,14 @@ usermod -a -G admin vagrant
 sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=admin' /etc/sudoers
 sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
 
-install_vbox(){
-    # install virtualbox guest additions
-    # mount iso
-    mkdir /tmp/isomount
-    mount -t iso9660 -o loop /root/VBoxGuestAdditions.iso /tmp/isomount
+# install virtualbox guest additions
+# mount iso
+mkdir /tmp/isomount
+mount -t iso9660 -o loop /tmp/VBoxGuestAdditions.iso /tmp/isomount
 
-    # Install the drivers
-    /tmp/isomount/VBoxLinuxAdditions.run
+# Install the drivers
+/tmp/isomount/VBoxLinuxAdditions.run
 
-    # Cleanup
-    umount /tmp/isomount
-    rm -rf /tmp/isomount /root/VBoxGuestAdditions.iso
-}
-[[ -z /root/VBoxGuestAdditions.iso ]] && install_vbox
+# Cleanup
+umount /tmp/isomount
+rm -rf /tmp/isomount /tmp/VBoxGuestAdditions.iso
