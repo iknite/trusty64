@@ -34,7 +34,7 @@
                 "<esc><esc><enter><wait>",
                 "/install/vmlinuz initrd=/install/initrd.gz noapic ",
                 "preseed/file=/cdrom/preseed/ubuntu-server-minimalvm.seed ",
-                "ks=http://{{.HTTPIP}}:{{.HTTPPort}}/trusty_minimal.cfg ",
+                "ks=http://{{.HTTPIP}}:{{.HTTPPort}}/trusty64.cfg ",
                 "auto ", 
                 "debian-installer=en_US ",
                 "locale=en_US ", 
@@ -57,7 +57,7 @@
                 }
             },
             "scripts": [
-                "trusty_minimal.sh"
+                "trusty64.sh"
             ]
     }],
     "post-processors": [ "vagrant" ]
