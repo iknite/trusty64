@@ -54,16 +54,18 @@
             "type": "shell",
             "override": {
                 "virtualbox-iso": {
-                    "execute_command": "echo '{{ user `ssh_password`}}' | sudo -S sh '{{ .Path }}'"
+                    "execute_command": "echo '{{ user `ssh_password`}}' | sudo -E -S sh '{{ .Path }}'"
                 }
             },
             "scripts": [
-                "trusty64.sh"
+                "trusty64.sh",
+                "install-virtualbox.sh"
             ]
     }],
     "post-processors": [ 
         {
             "type": "vagrant", 
+            "only": ["virtualbox-iso"],
             "include": "build/metadata.json",
             "output": "build/trusty64.box"
         }
