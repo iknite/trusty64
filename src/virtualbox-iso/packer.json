@@ -23,10 +23,10 @@
             "ssh_wait_timeout": "90m",
             "ssh_username": "{{ user `ssh_username`}}",
             "ssh_password": "{{ user `ssh_password`}}",
-            "shutdown_command": "echo '{{ user `ssh_password`}}' | sudo -S shutdown -P now",
+            "shutdown_command": "echo '{{ user `ssh_password`}}' | sudo -E -S shutdown -P now",
             "boot_wait": "5s",
             "virtualbox_version_file": ".vbox_version",
-            "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
+            "guest_additions_mode": "disable",
             "vboxmanage": [
                 [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
                 [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
@@ -35,7 +35,7 @@
                 "<esc><esc><enter><wait>",
                 "/install/vmlinuz initrd=/install/initrd.gz noapic ",
                 "preseed/file=/cdrom/preseed/ubuntu-server-minimalvm.seed ",
-                "ks=http://{{.HTTPIP}}:{{.HTTPPort}}/trusty64.cfg ",
+                "ks=http://{{.HTTPIP}}:{{.HTTPPort}}/kickstart.cfg ",
                 "auto ", 
                 "debian-installer=en_US ",
                 "locale=en_US ", 
@@ -58,16 +58,8 @@
                 }
             },
             "scripts": [
-                "trusty64.sh",
-                "install-virtualbox.sh"
+                "update.sh"
             ]
     }],
-    "post-processors": [ 
-        {
-            "type": "vagrant", 
-            "only": ["virtualbox-iso"],
-            "include": "build/metadata.json",
-            "output": "build/trusty64.box"
-        }
-    ]
+    "post-processors": []
 }

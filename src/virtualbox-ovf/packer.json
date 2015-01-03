@@ -1,0 +1,42 @@
+{
+    "description": "Ubuntu 14.04.1 64Bits",
+    "min_packer_version": "0.6.1",
+    "variables": {
+        "vm_name": "trusty64",
+        "source_path": "../virtualbox-iso/output-virtualbox-iso/trusty64.ovf",
+        "ssh_username": "vagrant",
+        "ssh_password": "vagrant"
+    },
+    "builders": [
+        {
+            "type": "virtualbox-ovf",
+            "source_path": "{{user `source_path`}}",
+            "vm_name": "{{ user `vm_name`}}",
+            "headless": false,
+            "http_directory": "./",
+            "ssh_username": "{{ user `ssh_username`}}",
+            "ssh_password": "{{ user `ssh_password`}}",
+            "shutdown_command": "echo '{{ user `ssh_password`}}' | sudo -S shutdown -P now",
+            "guest_additions_path": "/tmp/VBoxGuestAdditions.iso"
+        }
+    ],
+    "provisioners": [{ 
+            "type": "shell",
+            "override": {
+                "virtualbox-ovf": {
+                    "execute_command": "echo '{{ user `ssh_password`}}' | sudo -E -S sh '{{ .Path }}'"
+                }
+            },
+            "scripts": [
+                "install-virtualbox.sh"
+            ]
+    }],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "only": ["virtualbox-ovf"],
+            "include": "../../build/metadata.json",
+            "output": "../../build/trusty64.box"
+        }
+    ]
+}
