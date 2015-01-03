@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/bin/bash
 
 # Updating and Upgrading dependencies
 apt-get update -y -qq > /dev/null

@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Setup sudo to allow no-password sudo for "admin"
 groupadd -r admin
@@ -9,7 +10,8 @@ sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
 
 
 # sudo install requiered dependencies
-sudo apt-get install linux-headers-generic build-essential dkms
+apt-get install -y -qq linux-headers-generic build-essential dkms nfs-common > /dev/null
+
 
 # install virtualbox guest additions
 # mount iso
