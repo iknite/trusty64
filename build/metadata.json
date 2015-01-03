@@ -1,0 +1,19 @@
+{
+    "name": "iknite/trusty64",
+    "description": "Ubuntu 14.04.1 64Bits",
+    "baseurl": "trusty64.box",
+    "provider": "virtualbox",
+    "versions": [
+        {
+            "version": "0.0.0",
+            "provider": "virtualbox",
+            "url": "trusty64.box",
+                "providers": [
+                {
+                    "name": "virtualbox",
+                    "url": "trusty64.box"
+                }
+            ]
+        }
+    ]
+}
