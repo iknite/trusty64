@@ -1,0 +1,69 @@
+{
+    "description": "Ubuntu 14.04.1 64Bits",
+    "min_packer_version": "0.6.1",
+    "variables": {
+        "vm_name": "trusty64",
+        "iso_url": "http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso",
+        "iso_checksum": "ca2531b8cd79ea5b778ede3a524779b9",
+        "iso_checksum_type": "md5",
+        "ssh_username": "vagrant",
+        "ssh_password": "vagrant"
+    }, 
+    "builders": [
+        {
+            "type": "qemu",
+            "iso_url": "{{ user `iso_url`}}",
+            "iso_checksum": "{{ user `iso_checksum`}}",
+            "iso_checksum_type": "{{ user `iso_checksum_type`}}",
+            "vm_name": "{{ user `vm_name`}}",
+            "disk_size": 5000,
+            "format": "qcow2",
+            "headless": false,
+            "accelerator": "kvm",
+            "http_directory": "./",
+            "ssh_wait_timeout": "90m",
+            "ssh_username": "{{ user `ssh_username`}}",
+            "ssh_password": "{{ user `ssh_password`}}",
+            "shutdown_command": "echo '{{ user `ssh_password`}}' | sudo -E -S shutdown -P now",
+            "boot_wait": "5s",
+            "net_device": "virtio-net",
+            "disk_interface": "virtio",
+            "boot_command": [
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz initrd=/install/initrd.gz noapic ",
+                "preseed/file=/cdrom/preseed/ubuntu-server-minimalvm.seed ",
+                "ks=http://{{.HTTPIP}}:{{.HTTPPort}}/kickstart.cfg ",
+                "auto ", 
+                "debian-installer=en_US ",
+                "locale=en_US ", 
+                "hostname={{ .Name }} ",
+                "debian-installer/framebuffer=false ", 
+                "debconf/frontend=noninteractive ",
+                "kbd-chooser/method=us ",
+                "console-setup/ask_detect=false ",
+                "user-setup/allow-password-weak=true ",
+                "partman-basicfilesystems/no_swap=false ",
+                "-- <enter>" 
+            ]
+        }
+    ],
+    "provisioners": [{ 
+            "type": "shell",
+            "override": {
+                "qemu": {
+                    "execute_command": "echo '{{ user `ssh_password`}}' | sudo -E -S sh '{{ .Path }}'"
+                }
+            },
+            "scripts": [
+                "update.sh",
+                "install-vagrant.sh"
+            ]
+    }],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "output": "../../build/trusty64_{{.Provider}}.box",
+            "compression_level": 0
+        }
+    ]
+}

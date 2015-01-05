@@ -34,9 +34,7 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "only": ["virtualbox-ovf"],
-            "include": "../../build/metadata.json",
-            "output": "../../build/trusty64.box"
+            "output": "../../build/trusty64_{{.Provider}}.box"
         }
     ]
 }
