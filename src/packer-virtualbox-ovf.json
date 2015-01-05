@@ -3,7 +3,7 @@
     "min_packer_version": "0.6.1",
     "variables": {
         "vm_name": "trusty64",
-        "source_path": "../virtualbox-iso/output-virtualbox-iso/trusty64.ovf",
+        "source_path": "output-virtualbox-iso/trusty64.ovf",
         "ssh_username": "vagrant",
         "ssh_password": "vagrant"
     },
@@ -28,13 +28,14 @@
                 }
             },
             "scripts": [
-                "install-virtualbox.sh"
+                "provision/install-vagrant.sh",
+                "provision/install-virtualbox.sh"
             ]
     }],
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "../../build/trusty64_{{.Provider}}.box"
+            "output": "../build/trusty64_{{.Provider}}.box"
         }
     ]
 }

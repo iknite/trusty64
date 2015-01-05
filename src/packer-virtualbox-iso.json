@@ -11,23 +11,26 @@
     }, 
     "builders": [
         {
-            "type": "qemu",
+            "type": "virtualbox-iso",
+            "guest_os_type": "Ubuntu_64",
             "iso_url": "{{ user `iso_url`}}",
             "iso_checksum": "{{ user `iso_checksum`}}",
             "iso_checksum_type": "{{ user `iso_checksum_type`}}",
             "vm_name": "{{ user `vm_name`}}",
             "disk_size": 5000,
-            "format": "qcow2",
             "headless": false,
-            "accelerator": "kvm",
             "http_directory": "./",
             "ssh_wait_timeout": "90m",
             "ssh_username": "{{ user `ssh_username`}}",
             "ssh_password": "{{ user `ssh_password`}}",
             "shutdown_command": "echo '{{ user `ssh_password`}}' | sudo -E -S shutdown -P now",
             "boot_wait": "5s",
-            "net_device": "virtio-net",
-            "disk_interface": "virtio",
+            "virtualbox_version_file": ".vbox_version",
+            "guest_additions_mode": "disable",
+            "vboxmanage": [
+                [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
+                [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+            ],
             "boot_command": [
                 "<esc><esc><enter><wait>",
                 "/install/vmlinuz initrd=/install/initrd.gz noapic ",
@@ -50,20 +53,13 @@
     "provisioners": [{ 
             "type": "shell",
             "override": {
-                "qemu": {
+                "virtualbox-iso": {
                     "execute_command": "echo '{{ user `ssh_password`}}' | sudo -E -S sh '{{ .Path }}'"
                 }
             },
             "scripts": [
-                "update.sh",
-                "install-vagrant.sh"
+                "provision/update.sh"
             ]
     }],
-    "post-processors": [
-        {
-            "type": "vagrant",
-            "output": "../../build/trusty64_{{.Provider}}.box",
-            "compression_level": 0
-        }
-    ]
+    "post-processors": []
 }
