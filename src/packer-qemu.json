@@ -62,7 +62,7 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "output": "../../build/trusty64_{{.Provider}}.box",
+            "output": "../build/trusty64_{{.Provider}}.box",
             "compression_level": 0
         }
     ]

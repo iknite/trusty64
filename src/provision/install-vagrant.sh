@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Setup sudo to allow no-password sudo for "admin"
 groupadd -r admin
