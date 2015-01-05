@@ -12,7 +12,7 @@ build/trusty64_libvirt.box:
 
 build: build/trusty64_virtualbox.box build/trusty64_libvirt.box
 
-install: build
+install:
 	@cd build && vagrant box add metadata.json
 
 remove:
