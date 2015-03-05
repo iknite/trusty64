@@ -4,7 +4,7 @@
     "baseurl": "trusty64.box",
     "versions": [
         {
-            "version": "0.0.0",
+            "version": "0.0.1",
                 "providers": [
                 {
                     "name": "virtualbox",
