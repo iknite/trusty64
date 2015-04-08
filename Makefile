@@ -1,23 +1,30 @@
-.PHONY: build install remove clean
+.PHONY: build docker vagrant
 .DEFAULT_GOAL := build
 
-src/output-virtualbox-iso/trusty64.ovf:
-	@cd src && packer build packer-virtualbox-iso.json
+guard-%:
+	@if [ "${${*}}" == "" ]; then echo -e "\nERROR: variable $* not set\n" && exit 1; fi
 
-build/trusty64_virtualbox.box: src/output-virtualbox-iso/trusty64.ovf
-	@cd src && packer build packer-virtualbox-ovf.json
+build/vagrant/trusty64_virtualbox.box:
+	@packer build -only=virtualbox-iso src/packer.json
 
-build/trusty64_libvirt.box:
-	@cd src && packer build packer-qemu.json
+build/vagrant/trusty64_libvirt.box:
+	@packer build -only=qemu src/packer.json
 
-build: build/trusty64_virtualbox.box build/trusty64_libvirt.box
+build/vagrant/trusty64_docker.box:
+	@packer build -only=docker src/packer.json
 
-install:
-	@cd build && vagrant box add metadata.json
+build/docker/rootfs.tar.xz:
+	@sudo ./src/mkimage-docker.sh
 
-remove:
-	@vagrant box remove iknite/trusty64 --provider=libvirt
-	@vagrant box remove iknite/trusty64 --provider=virtualbox
+build: build/docker/rootfs.tar.xz
+	@packer	build -parallel=false src/packer.json
 
-clean:
-	@rm -rf build/trusty64_*.box src/output-virtualbox-iso
+docker: build/docker/rootfs.tar.xz guard-VERSION
+	@docker build -t iknite/trusty64:${VERSION} build/docker
+
+vagrant:
+	@cd build/vagrant && vagrant box add metadata.json
+
+clean: 
+	@rm -f build/vagrant/trusty64_*.box build/docker/rootfs*
+
