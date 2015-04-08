@@ -15,3 +15,4 @@ mount -t iso9660 -o loop /tmp/VBoxGuestAdditions.iso /tmp/isomount
 # Cleanup
 umount /tmp/isomount
 rm -rf /tmp/isomount /tmp/VBoxGuestAdditions.iso
+apt-get remove --purge build-essential -y -qq
