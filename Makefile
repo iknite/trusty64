@@ -16,8 +16,9 @@ build/vagrant/trusty64_docker.box:
 build/docker/rootfs.tar.xz:
 	@sudo ./src/mkimage-docker.sh
 
-build: build/docker/rootfs.tar.xz
-	@packer	build -parallel=false src/packer.json
+build:  build/docker/rootfs.tar.xz \
+	build/vagrant/trusty64_virtualbox.box \
+	build/vagrant/trusty64_libvirt.box
 
 docker: build/docker/rootfs.tar.xz guard-VERSION
 	@docker build -t iknite/trusty64:${VERSION} build/docker
