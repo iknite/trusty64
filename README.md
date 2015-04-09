@@ -1,6 +1,5 @@
-
-Packer.io trusty64 build
-========================
+Trusty64 images
+===============
 
 
 Simple Base images for a true minimal Ubuntu 14.04.2 64Bits
