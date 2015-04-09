@@ -2,9 +2,9 @@
 # Based on github.com/docker/docker/contrig/mkimage.sh
 set -e
 
+suite=trusty
 dir="build/docker"
 rootfsDir="$dir/rootfs"
-
 ( set -x; mkdir -p "$rootfsDir" )
 
 # get path to "chroot" in our current PATH
@@ -19,7 +19,7 @@ rootfs_chroot() {
 # base install
 ( 
     set -x 
-    debootstrap --include=ubuntu-minimal --components=main,universe trusty $rootfsDir http://archive.ubuntu.com/ubuntu
+    debootstrap --include=ubuntu-minimal --components=main,universe $suite $rootfsDir http://archive.ubuntu.com/ubuntu
 )
 # Docker specifics
 # prevent init scripts from running during install/update
