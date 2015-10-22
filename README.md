@@ -45,7 +45,7 @@ There's no other way to launch it than `sudo src/mkimage-docker.sh`
 Before run the command please make sure no `VT-x` consumer are in the **build machine**. Otherwise virtualbox tries to
 trick you to kernel disable it. 
 
-Running `packer build -parallel=false src/packer.json` will succesfuly built. 
+Running `packer build -parallel=false src/packer.json` will succesfuly build. 
 
 
 #### Optional variables and their defaults:
